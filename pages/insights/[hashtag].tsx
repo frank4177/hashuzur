@@ -12,7 +12,6 @@ import {
   CssBaseline,
   IconButton,
   Paper,
-  useTheme,
   PaletteMode
 } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';

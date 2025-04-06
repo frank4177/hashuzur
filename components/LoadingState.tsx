@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Card, CardContent, Skeleton, Typography } from '@mui/material';
+import { Box, Card, CardContent, Skeleton } from '@mui/material';
 
 // Loading state component with skeleton animation
 const LoadingState: React.FC = () => {

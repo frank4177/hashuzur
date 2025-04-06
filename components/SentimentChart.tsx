@@ -111,7 +111,7 @@ const SentimentChart: React.FC<SentimentChartProps> = React.memo(({ data }) => {
         }}
         // Custom mark for min/max points
         slots={{
-          legend: (props) => (
+          legend: () => (
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                 <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: theme.palette.error.main }} />
