@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -8,14 +8,15 @@ import {
   Typography, 
   Box, 
   useMediaQuery, 
-  ThemeProvider, 
-  CssBaseline,
   IconButton,
   Paper,
-  PaletteMode
+  useTheme
 } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+// Import the theme context hook
+import { useThemeContext } from '@/context/ThemeContext'; 
 
 // Lazy load the components to improve performance
 const HashtagTrendCard = dynamic(() => import('../../components/HashtagTrendCard'), {
@@ -28,15 +29,14 @@ const HashtagDropdown = dynamic(() => import('../../components/HashtagDropdown')
 import LoadingState from '../../components/LoadingState';
 import ErrorState from '../../components/ErrorState';
 import { useHashtagTrend } from '../../hooks/useHashtagTrend';
-import { getTheme } from '../../styles/theme';
 
 const HashtagInsightsPage: NextPage = () => {
   const router = useRouter();
   const { hashtag } = router.query;
-  const [mode, setMode] = useState<PaletteMode>('light');
   
-  // Get custom theme based on current mode
-  const theme = useMemo(() => getTheme(mode), [mode]);
+  // Use the theme context instead of local state
+  const { mode, toggleColorMode } = useThemeContext();
+  const theme = useTheme();
   
   // Check if screen is mobile
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -53,11 +53,6 @@ const HashtagInsightsPage: NextPage = () => {
       : '';
   }, [hashtag]);
   
-  // Toggle between light and dark mode
-  const toggleColorMode = useCallback(() => {
-    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-  }, []);
-  
   // Handle route change if hashtag is missing
   React.useEffect(() => {
     if (router.isReady && !hashtag) {
@@ -71,12 +66,10 @@ const HashtagInsightsPage: NextPage = () => {
   }, [hashtag, currentHashtag]);
   
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={`Sentiment analysis for hashtag ${hashtag}`} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
       <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
@@ -125,7 +118,7 @@ const HashtagInsightsPage: NextPage = () => {
           </Paper>
         </Container>
       </Box>
-    </ThemeProvider>
+    </>
   );
 };
 
