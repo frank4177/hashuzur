@@ -19,6 +19,8 @@ interface HashtagTrendCardProps {
   data: HashtagTrendData;
 }
 
+// usememo This prevents unnecessary recalculations when the component re-renders unless the dependencies change.
+
 const HashtagTrendCard: React.FC<HashtagTrendCardProps> = ({ data }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -67,7 +69,10 @@ const HashtagTrendCard: React.FC<HashtagTrendCardProps> = ({ data }) => {
   const { minSentiment, maxSentiment } = useMemo(() => {
     const sentiments = data.trend.map(point => point.sentiment);
     return {
+      // find minimum values in sentiments array
       minSentiment: Math.min(...sentiments).toFixed(2),
+
+       // find maximum values in sentiments array
       maxSentiment: Math.max(...sentiments).toFixed(2)
     };
   }, [data.trend]);
